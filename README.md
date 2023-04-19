@@ -29,10 +29,15 @@
 https://rhel.pkgs.org/8/percona-x86_64/percona-toolkit-3.5.1-2.el8.x86_64.rpm.html
 
 依赖包安装：
+---
 
 数据库版本：Percona-Server-5.7.40-43-Linux.x86_64.glibc2.17.tar.gz（这个是免安装版本，你要是下载是二进制安装就傻逼了。我这个时间段最新。你看得时候不知道是不是了）
+
 liunx环境：能跑shell都行
+
 数据库安装目录：/usr/local/  当然你看我脚本也可以自己改
+
+---
 
 授权：脚本是dba用户执行得。你得规范点
 useradd dba
