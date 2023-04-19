@@ -83,17 +83,9 @@ yum install gcc libffi-devel openssl-devel python3-devel -y
 
 ### 创建数据库
 venus_dbinit.sh -d /data3 -p 3369 -m 10 -s 0 -v mysql57 -e utf8mb4
-image.png
 
--d 数据库安装目录
+![image](https://user-images.githubusercontent.com/30198924/233019833-0a2a3f7d-a845-4a3a-94d9-5caa651e6a72.png)
 
--p 端口
-
--m 数据库内存设置
-
--s 主从设置 0 为主库。1位从库
-
--v 数据库版本
 ![image](https://user-images.githubusercontent.com/30198924/233004851-d31ebe12-c68a-4e46-9cfe-742e535e46a5.png)
 
 ### 第二步数据库启动
@@ -105,13 +97,13 @@ image.png
 
 基本几秒钟就搞定。如果就到这就完事。那就不用完了。哪有DBA就创建一个数据库的。玩个得啊。
 
-#主从架构
+# 主从架构
   
   基于上面得操作继续。在从库数据库安装
   
   ![image](https://user-images.githubusercontent.com/30198924/233006057-2ea9c6c9-cc77-4b5a-8848-5fff6ea111fd.png)
   
- 创建从库：
+ ## 主从同步命令
  
  venus_mysql_slaveof.sh -p 3309 -m 172.26.1.2
 
