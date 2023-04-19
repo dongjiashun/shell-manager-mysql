@@ -1,0 +1,94 @@
+#!/bin/bash
+### author : guweitao@
+### date : 2016-06-14
+### func : login mysql at localhost
+
+PATH=$PATH:/usr/local/bin:/usr/local/mysql56/bin:/usr/local/mariadb102/bin
+export LANG=en_US.UTF-8
+
+function  usage()
+{
+echo "usage:    $0 -p port [ -e <sql> ]"
+echo "e.g. $0 -p 3001 "
+echo "e.g. $0 -p 3001 -e 'show databaases;'"
+}
+
+if [[ "$#" -lt 1 ]]  
+  then
+     usage
+     exit 1
+fi
+
+###default directory
+user=mstdba_mgr
+password=xxxxxxx
+host=127.0.0.1
+
+
+
+while getopts p:he: OPTION
+do
+   case "$OPTION" in
+       p)port=$OPTARG
+       ;;
+       h)usage
+         exit 1
+       ;;
+       e)sql=$OPTARG
+       ;;
+       *)usage      
+         exit 1
+       ;;
+   esac
+done
+
+function findatadir()
+{
+for d in /data/ /data2/ /data3/
+do
+        FILE=`find $d/mysql$port  -name my${port}.cnf 2>/dev/null`
+        if [ ! -z $FILE  ]
+        then
+                datadir=$d
+		if [ ! -z "`cat $FILE|egrep 'mysql_version=mysql57'`" ]
+		then
+			MBIN=/usr/local/mysql57/bin
+		elif [ ! -z "`cat $FILE|egrep 'mysql_version=mariadb102'`" ];then
+                        MBIN=/usr/local/mariadb102/bin
+		else
+                        MBIN=/usr/local/mysql57/bin
+		fi
+                break
+        fi
+
+done
+        if [ -z $FILE ]
+        then
+                echo "No $port found,please check!"
+                exit 1
+        fi
+}
+if [ $port -lt 20000 ]
+then
+	findatadir
+else
+	MBIN=/usr/local/mysql57/bin
+fi
+if [ -d $MBIN ]
+then
+        mysql=$MBIN
+else
+        echo "no mysql binary,please check!"
+        exit 1
+fi
+
+
+
+if [ -n "$sql" ] && [ $port -lt 20000 ]
+then
+	$mysql/mysql  -A -u $user -p$password  -h $host -P $port -e "$sql"
+else
+        $mysql/mysql -A -u $user -p$password  -h $host -P $port 
+
+fi  
+

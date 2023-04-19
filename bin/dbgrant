@@ -1,0 +1,126 @@
+#!/bin/bash
+### author : guweitao@dianwoba.com
+### date : 2016-02-23
+### func : grant on localhost
+
+PATH=$PATH:/usr/local/bin:/usr/local/mysql56/bin
+export LANG=en_US.UTF-8
+
+function  usage()
+{
+echo "usage:    $0  OPTION:
+	-p port
+	-d db 
+	-u username 
+	   optional
+	   default is the same as db
+	-c clientip  
+	   optional
+	   clientip:grant ips,e.g. 10.1.1.%	
+	   default is 10.0.0.%
+	-r role
+	   role:
+	   r:select
+	   w:select,update,delete,insert
+	   default value:r
+
+"
+echo "e.g. $0 -p 3873 -d dbatest [ -u dbatest_r ] [ -c 10.0.0.% ] -r r"
+exit 1
+}
+
+###default directory
+mysql=/usr/local/mysql56/bin
+user=mstdba_mgr
+password=xxxxxxx
+
+while getopts p:r:d:u:c:H OPTION
+do
+   case "$OPTION" in
+       p)port=$OPTARG
+       ;;
+       r)role=$OPTARG
+       ;;
+       d)db=$OPTARG
+       ;;
+       u)username=$OPTARG
+       ;;
+       c)clientip=$OPTARG
+       ;;
+       H)usage
+         exit 1
+       ;;
+       *)usage      
+         exit 1
+       ;;
+   esac
+done
+
+### exec this script at localhost of master only
+host=127.0.0.1
+
+if [ -z $role ]
+then
+	role=r
+fi
+
+if [ $role = w ]
+then
+	username=$db
+elif [ $role = r ];then
+	if [ -z $username ]
+	then
+		username=${db}_r
+	fi
+else
+	usage
+	exit 1
+fi
+
+
+if [ -z  $clientip ]
+then
+	clientip="10.0.0.%"
+fi
+
+if [ ! -d $mysql ]
+then
+	echo "no mysql binary,please check!"
+	exit 1
+fi
+
+#md5sum1=`echo ${username} | md5sum | awk '{print $1}'`
+md5sum1=`echo ${port}${username} | md5sum | awk '{print $1}'`
+PASS=`echo ${md5sum1}$db|md5sum | awk '{print $1}'`
+PASS=`echo ${PASS:1:16}`
+
+localip="`ip addr | grep "inet " | grep -v 127.0.0.1 |egrep -v secondary | awk '{print $2}' | cut -d / -f 1 | egrep ^10`"
+
+if [ $role = r ];then
+echo "grant select on ${db}.* to ${username}@'${clientip}' identified by '$PASS';" > /tmp/.${username}_${db}_select.sql
+elif [ $role = w ];then
+echo "grant select,update,delete,insert on ${db}.* to ${username}@'${clientip}' identified by '$PASS';" > /tmp/.${username}_${db}_select.sql
+fi
+echo "flush privileges;" >> /tmp/.${username}_${db}_select.sql
+
+$mysql/mysql --connect_timeout=10   -A -u $user -p$password  -h $host -P $port   < /tmp/.${username}_${db}_select.sql
+if [ $? -eq 0 ]
+then
+	echo "
+	权限如下：
+	server:${localip}:$port
+	user:$username
+	password:$PASS
+	db:$db
+	client ip:$clientip
+	"
+	cd /tmp/ && rm .${username}_${db}_select.sql
+	exit 0
+else
+	echo "grant privileges failed"
+        cd /tmp/ && rm .${username}_${db}_select.sql
+	exit 1
+fi
+
+
+
