@@ -5,7 +5,9 @@
   基本上满足百分之99的DBA。mysql数据库自动化创建数据库
   
   1.介绍下这个数据库脚本能干吗。？？？？估计很多人
+  
     1。同一个服务器多个端口数据库。这个很多抠逼特喜欢干的。
+    
     
   
 ![image](https://user-images.githubusercontent.com/30198924/232993803-3666ad3f-5dff-43ff-a784-f3c384ffa0ad.png)
@@ -71,4 +73,20 @@ image.png
 ### 登入数据库
 ![image](https://user-images.githubusercontent.com/30198924/233004928-d416083e-87c9-4aa4-9054-a79bf6f26ace.png)
 
-基本几秒钟就搞定。
+基本几秒钟就搞定。如果就到这就完事。那就不用完了。哪有DBA就创建一个数据库的。玩个得啊。
+
+#主从架构
+  
+  基于上面得操作继续。在从库数据库安装
+  
+  ![image](https://user-images.githubusercontent.com/30198924/233006057-2ea9c6c9-cc77-4b5a-8848-5fff6ea111fd.png)
+  
+ 创建从库：
+ 
+ venus_mysql_slaveof.sh -p 3309 -m 172.26.1.2
+
+
+![image](https://user-images.githubusercontent.com/30198924/233006505-fa8c2f83-254e-4588-b9b1-ffd5db1cdcba.png)
+
+  
+  基本一个主从就完事了。
