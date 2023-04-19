@@ -63,7 +63,7 @@ yum install -y perl-devel
 yum install gcc libffi-devel openssl-devel python3-devel -y
 
 ## 操作命令
-第一步创建：
+第一步 创建：
  
      venus_dbinit.sh -d /data3 -p 3369 -m 10 -s 0 -v mysql57 -e utf8mb4
 
@@ -81,7 +81,7 @@ yum install gcc libffi-devel openssl-devel python3-devel -y
 
 创建数据库
 
-### 创建数据库
+### 第一步创建数据库
 venus_dbinit.sh -d /data3 -p 3369 -m 10 -s 0 -v mysql57 -e utf8mb4
 
 ![image](https://user-images.githubusercontent.com/30198924/233019833-0a2a3f7d-a845-4a3a-94d9-5caa651e6a72.png)
