@@ -20,7 +20,10 @@
 ==========================================mysql57安装=====================================
 数据库安装包下载：
 
-账号密码权限：/usr/local/bin/grant.sql
+账号密码权限：
+
+/usr/local/bin/grant.sql  通过这个sql文件。初始化数据库得时候创建用户和权限
+
 https://rhel.pkgs.org/8/percona-x86_64/percona-toolkit-3.5.1-2.el8.x86_64.rpm.html
 
 依赖包安装：
