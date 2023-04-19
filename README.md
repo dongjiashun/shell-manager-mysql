@@ -19,17 +19,56 @@ https://rhel.pkgs.org/8/percona-x86_64/percona-toolkit-3.5.1-2.el8.x86_64.rpm.ht
 依赖包安装：
 useradd dba
 chmod 750 /usr/local/bin
+
 yum install -y perl-DBI perl-DBD-MySQL
+
 yum install -y perl-ExtUtils-Embed 
+
 yum install -y perl-Digest-MD5
+
 yum install -y perl-devel
+
 yum install gcc libffi-devel openssl-devel python3-devel -y
 
 ## 操作命令
- venus_dbinit.sh -d /data3 -p 3369 -m 10 -s 0 -v mysql57 -e utf8mb4
- mysql_start.sh -P 3369
- mysql_stop.sh -P 3301
+第一步创建：
  
+     venus_dbinit.sh -d /data3 -p 3369 -m 10 -s 0 -v mysql57 -e utf8mb4
+
+第二步 开启数据库
+
+     mysql_start.sh -P 3369
+
+第三步
+
+    mysql_stop.sh -P 3301
+ 
+
  ## 图文讲解
  
 
+创建数据库
+
+### 创建数据库
+venus_dbinit.sh -d /data3 -p 3369 -m 10 -s 0 -v mysql57 -e utf8mb4
+image.png
+
+-d 数据库安装目录
+
+-p 端口
+
+-m 数据库内存设置
+
+-s 主从设置 0 为主库。1位从库
+
+-v 数据库版本
+![image](https://user-images.githubusercontent.com/30198924/233004851-d31ebe12-c68a-4e46-9cfe-742e535e46a5.png)
+
+### 第二步数据库启动
+![image](https://user-images.githubusercontent.com/30198924/233004890-8bdedc67-b5b5-4af5-a369-01dbbb56ea66.png)
+
+
+### 登入数据库
+![image](https://user-images.githubusercontent.com/30198924/233004928-d416083e-87c9-4aa4-9054-a79bf6f26ace.png)
+
+基本几秒钟就搞定。
