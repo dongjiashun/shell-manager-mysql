@@ -130,3 +130,7 @@ venus_dbinit.sh -d /data3 -p 3369 -m 10 -s 0 -v mysql57 -e utf8mb4
 
 这个脚本要集成zabbix 里面得一个hosts 表。获取到hostname。。。。。。这次就分享到这把。后面集成MHA 顺带说下。MHA bug。
   
+  # redis
+  
+  - redis安装
+  - yum install redis -y
